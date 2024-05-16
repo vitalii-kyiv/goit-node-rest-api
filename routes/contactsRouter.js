@@ -11,8 +11,9 @@ import validateBody from "../middlewares/validateBody.js";
 import {
   createContactSchema,
   updateContactSchema,
+  updateContactStatusSchema,
 } from "../schemas/contactsSchemas.js";
-import isValidId from "../middlewares/isValiid.js";
+import isValidId from "../middlewares/isValidId.js";
 
 const contactsRouter = express.Router();
 
@@ -33,7 +34,8 @@ contactsRouter.put(
 
 contactsRouter.patch(
   "/:id/favorite",
-  // validateBody(createContactSchema),
+  validateBody(updateContactStatusSchema),
+  isValidId,
   updateStatusContact
 );
 

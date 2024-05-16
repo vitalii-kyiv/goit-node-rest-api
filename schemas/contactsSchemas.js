@@ -10,6 +10,7 @@ export const createContactSchema = Joi.object({
       "string.pattern.base":
         "The phone number must be on the form (XXX) XXX-XXXX",
     }),
+  favorite: Joi.boolean(),
 });
 
 export const updateContactSchema = Joi.object({
@@ -21,4 +22,9 @@ export const updateContactSchema = Joi.object({
       "string.pattern.base":
         "The phone number must be on the form (XXX) XXX-XXXX",
     }),
+  favorite: Joi.boolean(),
 }).or("name", "email", "phone");
+
+export const updateContactStatusSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
