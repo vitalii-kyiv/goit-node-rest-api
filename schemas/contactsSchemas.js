@@ -23,7 +23,7 @@ export const updateContactSchema = Joi.object({
         "The phone number must be on the form (XXX) XXX-XXXX",
     }),
   favorite: Joi.boolean(),
-}).or("name", "email", "phone");
+}).or("name", "email", "phone", "favorite");
 
 export const updateContactStatusSchema = Joi.object({
   favorite: Joi.boolean().required(),
