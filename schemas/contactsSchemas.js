@@ -2,7 +2,7 @@ import Joi from "joi";
 
 export const createContactSchema = Joi.object({
   name: Joi.string().required(),
-  email: Joi.string().email({ minDomainSegments: 2 }).required(),
+  email: Joi.string().email({ minDomainSegments: 2 }),
   phone: Joi.string()
     .pattern(/^\(\d{3}\) \d{3}-\d{4}$/)
     .required()
