@@ -15,9 +15,10 @@ import express from "express";
 // } from "../schemas/contactsSchemas.js";
 // import isValidId from "../middlewares/isValidId.js";
 import isEmptyBody from "../middlewares/isEmptyBody.js";
-import { signup } from "../controllers/usersControllers.js";
+import { signin, signout, signup } from "../controllers/usersControllers.js";
 import { registerUserSchema } from "../schemas/usersSchemas.js";
 import validateBody from "../middlewares/validateBody.js";
+import authenticate from "../middlewares/authenticate.js";
 
 const usersRouter = express.Router();
 
@@ -27,8 +28,14 @@ usersRouter.post(
   validateBody(registerUserSchema),
   signup
 );
-// usersRouter.post("/users/login", getAllContacts);
-// usersRouter.post("/users/logout", getAllContacts);
+usersRouter.post(
+  "/login",
+  isEmptyBody,
+  validateBody(registerUserSchema),
+  signin
+);
+
+usersRouter.post("/logout", authenticate, signout);
 // usersRouter.post("/users/current", getAllContacts);
 
 // contactsRouter.get("/:id", isValidId, getOneContact);

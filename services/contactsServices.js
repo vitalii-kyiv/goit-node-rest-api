@@ -1,9 +1,10 @@
 import { nanoid } from "nanoid";
 import Contact from "../models/Contacts.js";
 
-export const listContacts = async () => {
+export const listContacts = async (search = {}) => {
   try {
-    const contacts = await Contact.find();
+    const { filter = {} } = search;
+    const contacts = await Contact.find(filter);
     console.log("Contacts fetched: ", contacts);
     return contacts;
   } catch (error) {

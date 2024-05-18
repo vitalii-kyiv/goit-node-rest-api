@@ -11,7 +11,10 @@ import {
 
 export const getAllContacts = async (req, res, next) => {
   try {
-    const result = await listContacts();
+    const { _id: owner } = req.user;
+    console.log("owner", owner);
+    const filter = { owner };
+    const result = await listContacts({ filter });
     console.log("result", result);
     res.json(result);
   } catch (error) {
@@ -47,7 +50,8 @@ export const deleteContact = async (req, res, next) => {
 
 export const createContact = async (req, res, next) => {
   try {
-    const result = await addContact(req.body);
+    const { _id: owner } = req.user;
+    const result = await addContact({ ...req.body, owner });
     res.status(201).json(result);
   } catch (error) {
     next(error);
