@@ -1,7 +1,3 @@
-// import * as usersServices from "../services/authServices.js";
-
-// import ctrlWrapper from "../decorators/ctrlWrapper.js";
-
 import HttpError from "../helpers/HttpError.js";
 import compareHash from "../helpers/compareHash.js";
 import { createToken } from "../helpers/jvt.js";
@@ -32,39 +28,62 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log("email", email);
-    console.log("password", password);
     const user = await findUser({ email });
-    console.log("user", user);
     if (!user) {
-      throw HttpError(401, "Email or password invalid");
+      throw HttpError(401, "Email or password is wrong");
     }
     const comparePassword = await compareHash(password, user.password);
-    console.log("user.password", user.password);
     if (!comparePassword) {
-      throw HttpError(401, "Email or password invalid");
+      throw HttpError(401, "Email or password is wrong");
     }
     const { _id: id } = user;
     const payload = {
       id,
     };
     const token = createToken(payload);
-    console.log("token", token);
     await updateUser({ _id: id }, { token });
     res.json({
       token,
+      email,
+      subscription: "starter",
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const signout = async (req, res) => {
+export const signout = async (req, res, next) => {
   try {
     const { _id } = req.user;
     await updateUser({ _id }, { token: "" });
     res.json({
       message: "Signout success",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCurrent = async (req, res, next) => {
+  try {
+    const { email, subscription } = req.user;
+    res.json({
+      email,
+      subscription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changeUserSubscription = async (req, res, next) => {
+  try {
+    const { subscription } = req.body;
+    const { _id, email } = req.user;
+    await updateUser({ _id }, { subscription });
+    res.json({
+      email,
+      subscription,
     });
   } catch (error) {
     next(error);

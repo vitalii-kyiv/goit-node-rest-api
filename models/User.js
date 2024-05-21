@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { handleSaveError } from "./hooks.js";
+import { subscriptionUserList } from "../constans/userConstans.js";
 
 const userSchema = new Schema(
   {
@@ -14,7 +15,7 @@ const userSchema = new Schema(
     },
     subscription: {
       type: String,
-      enum: ["starter", "pro", "business"],
+      enum: subscriptionUserList,
       default: "starter",
     },
     token: {

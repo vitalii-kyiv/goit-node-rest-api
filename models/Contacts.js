@@ -1,4 +1,3 @@
-// import { version } from "joi";
 import { Schema, model } from "mongoose";
 import { handleSaveError } from "./hooks.js";
 
