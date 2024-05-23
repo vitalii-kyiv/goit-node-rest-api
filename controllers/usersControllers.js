@@ -17,8 +17,10 @@ export const signup = async (req, res, next) => {
     const newUser = await saveUser(req.body);
 
     res.status(201).json({
-      email: newUser.email,
-      subscription: "starter",
+      user: {
+        email: newUser.email,
+        subscription: "starter",
+      },
     });
   } catch (error) {
     next(error);
@@ -44,8 +46,7 @@ export const signin = async (req, res, next) => {
     await updateUser({ _id: id }, { token });
     res.json({
       token,
-      email,
-      subscription: "starter",
+      user: { email, subscription: "starter" },
     });
   } catch (error) {
     next(error);
@@ -56,7 +57,7 @@ export const signout = async (req, res, next) => {
   try {
     const { _id } = req.user;
     await updateUser({ _id }, { token: "" });
-    res.json({
+    res.status(204).json({
       message: "Signout success",
     });
   } catch (error) {

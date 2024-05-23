@@ -22,7 +22,7 @@ export const getContactService = async (filter) => {
 };
 
 export const removeContactService = async (filter) => {
-  return Contact.findByIdAndDelete(filter);
+  return Contact.findOneAndDelete(filter);
 };
 
 export const addContactService = async (data) => {

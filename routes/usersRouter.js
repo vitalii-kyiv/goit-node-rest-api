@@ -26,7 +26,7 @@ usersRouter.post(
 );
 usersRouter.post("/login", isEmptyBody, validateBody(signinUserSchema), signin);
 usersRouter.post("/logout", authenticate, signout);
-usersRouter.post("/current", authenticate, getCurrent);
+usersRouter.get("/current", authenticate, getCurrent);
 usersRouter.post(
   "/",
   authenticate,
