@@ -2,6 +2,7 @@ import express from "express";
 
 import isEmptyBody from "../middlewares/isEmptyBody.js";
 import {
+  changeUserAvatar,
   changeUserSubscription,
   getCurrent,
   signin,
@@ -15,6 +16,7 @@ import {
 } from "../schemas/usersSchemas.js";
 import validateBody from "../middlewares/validateBody.js";
 import authenticate from "../middlewares/authenticate.js";
+import upload from "../middlewares/upload.js";
 
 const usersRouter = express.Router();
 
@@ -32,6 +34,12 @@ usersRouter.post(
   authenticate,
   validateBody(subscriptionUserSchema),
   changeUserSubscription
+);
+usersRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  changeUserAvatar
 );
 
 export default usersRouter;

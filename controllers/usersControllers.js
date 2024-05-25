@@ -1,25 +1,31 @@
 import HttpError from "../helpers/HttpError.js";
 import compareHash from "../helpers/compareHash.js";
+import gravatar from "gravatar";
 import { createToken } from "../helpers/jvt.js";
 import { findUser, saveUser, updateUser } from "../services/usersServices.js";
+import path from "path";
+import fs from "fs/promises";
+import resizeImage from "../helpers/resizeImage.js";
 
-const { JWT_SECRET } = process.env;
-console.log("JWT_SECRET_CONT", JWT_SECRET);
+const avatarsPath = path.resolve("public", "avatars");
 
 export const signup = async (req, res, next) => {
   try {
     const { email } = req.body;
+    const avatarURL = gravatar.url(email);
+    console.log("avatarURL", avatarURL);
     const user = await findUser({ email });
     if (user) {
       throw HttpError(409, "Email in use");
     }
 
-    const newUser = await saveUser(req.body);
+    const newUser = await saveUser({ ...req.body, avatarURL });
 
     res.status(201).json({
       user: {
         email: newUser.email,
         subscription: "starter",
+        avatarURL,
       },
     });
   } catch (error) {
@@ -86,6 +92,24 @@ export const changeUserSubscription = async (req, res, next) => {
       email,
       subscription,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changeUserAvatar = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    console.log("req.user", req.user);
+    const { path: oldPath, filename } = req.file;
+    const newPath = path.join(avatarsPath, filename);
+    await resizeImage(oldPath);
+    await fs.rename(oldPath, newPath);
+    const avatarURL = path.join("avatars", filename);
+    const result = await updateUser({ _id }, { avatarURL });
+
+    console.log("avatarURL", avatarURL);
+    res.status(200).json({ avatarURL });
   } catch (error) {
     next(error);
   }
