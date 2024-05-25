@@ -107,8 +107,6 @@ export const changeUserAvatar = async (req, res, next) => {
     await fs.rename(oldPath, newPath);
     const avatarURL = path.join("avatars", filename);
     const result = await updateUser({ _id }, { avatarURL });
-
-    console.log("avatarURL", avatarURL);
     res.status(200).json({ avatarURL });
   } catch (error) {
     next(error);
