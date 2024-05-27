@@ -25,7 +25,6 @@ export const signup = async (req, res, next) => {
       user: {
         email: newUser.email,
         subscription: "starter",
-        avatarURL,
       },
     });
   } catch (error) {
