@@ -13,7 +13,6 @@ export const signup = async (req, res, next) => {
   try {
     const { email } = req.body;
     const avatarURL = gravatar.url(email);
-    console.log("avatarURL", avatarURL);
     const user = await findUser({ email });
     if (user) {
       throw HttpError(409, "Email in use");
@@ -99,7 +98,6 @@ export const changeUserSubscription = async (req, res, next) => {
 export const changeUserAvatar = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    console.log("req.user", req.user);
     const { path: oldPath, filename } = req.file;
     const newPath = path.join(avatarsPath, filename);
     await resizeImage(oldPath);

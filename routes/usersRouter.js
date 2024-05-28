@@ -17,6 +17,7 @@ import {
 import validateBody from "../middlewares/validateBody.js";
 import authenticate from "../middlewares/authenticate.js";
 import upload from "../middlewares/upload.js";
+import checkFileExists from "../middlewares/checkFileExists .js";
 
 const usersRouter = express.Router();
 
@@ -39,6 +40,7 @@ usersRouter.patch(
   "/avatars",
   authenticate,
   upload.single("avatar"),
+  checkFileExists,
   changeUserAvatar
 );
 
