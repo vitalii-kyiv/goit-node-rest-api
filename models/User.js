@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { handleSaveError } from "./hooks.js";
 import { subscriptionUserList } from "../constans/userConstans.js";
 
 const userSchema = new Schema(
@@ -21,6 +20,9 @@ const userSchema = new Schema(
     token: {
       type: String,
       default: null,
+    },
+    avatarURL: {
+      type: String,
     },
   },
   { versionKey: false, timestamps: true }
