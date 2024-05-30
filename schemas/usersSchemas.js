@@ -16,3 +16,10 @@ export const subscriptionUserSchema = Joi.object({
     .valid(...subscriptionUserList)
     .required(),
 });
+
+export const resendVerifyUserSchema = Joi.object({
+  email: Joi.string()
+    .email({ minDomainSegments: 2 })
+    .required()
+    .messages({ "any.required": "missing required field email" }),
+});
