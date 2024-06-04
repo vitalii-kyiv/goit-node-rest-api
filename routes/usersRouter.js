@@ -5,12 +5,15 @@ import {
   changeUserAvatar,
   changeUserSubscription,
   getCurrent,
+  resendVerifyEmail,
   signin,
   signout,
   signup,
+  verifyEmail,
 } from "../controllers/usersControllers.js";
 import {
   registerUserSchema,
+  resendVerifyUserSchema,
   signinUserSchema,
   subscriptionUserSchema,
 } from "../schemas/usersSchemas.js";
@@ -42,6 +45,15 @@ usersRouter.patch(
   upload.single("avatar"),
   checkFileExists,
   changeUserAvatar
+);
+
+usersRouter.get("/verify/:verificationToken", verifyEmail);
+
+usersRouter.post(
+  "/verify",
+  isEmptyBody,
+  validateBody(resendVerifyUserSchema),
+  resendVerifyEmail
 );
 
 export default usersRouter;
